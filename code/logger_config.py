@@ -3,7 +3,6 @@ import datetime
 
 logger = logging.getLogger('election_app_logger')
 
-# Set the log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
 logger.setLevel(logging.DEBUG)
 
 console_handler = logging.StreamHandler()

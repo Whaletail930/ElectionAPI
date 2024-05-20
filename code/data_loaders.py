@@ -63,8 +63,6 @@ def concat_dfs(csv_2014_filename: str, csv_2018_filename: str, csv_2022_filename
 
         full_df = full_df.reset_index(drop=True)
 
-        # full_df.to_csv(DATA / 'hu_election_2014_2022.csv')
-
         full_df = full_df.drop(columns=['name'])
 
         logger.info("Dataset created")
