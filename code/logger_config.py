@@ -1,5 +1,8 @@
 import logging
 import datetime
+import os
+
+from pathlib import Path
 
 logger = logging.getLogger('election_app_logger')
 
@@ -8,7 +11,8 @@ logger.setLevel(logging.DEBUG)
 console_handler = logging.StreamHandler()
 time = datetime.datetime.now()
 time = time.strftime("%Y-%m-%d-%H-%M-%S")
-file_handler = logging.FileHandler(f'{time}_election_app.log')
+DATA = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'DATA'))
+file_handler = logging.FileHandler(DATA / Path(f'{time}_election_app.log'))
 
 console_handler.setLevel(logging.WARNING)
 file_handler.setLevel(logging.DEBUG)
