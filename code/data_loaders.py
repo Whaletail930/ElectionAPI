@@ -97,7 +97,16 @@ def ingest_data_to_df() -> pd.DataFrame:
 
     df = pd.DataFrame(cursor.fetchall(), columns=['district', 'number_votes', 'share_votes', 'affiliation', 'year'])
 
-    return df
+    """idx = df.groupby('district')['share_votes'].idxmax()
+    df = df.loc[idx]"""
+
+    max_share_votes_per_district_year = df.groupby(['year', 'district'])['share_votes'].transform(max)
+
+    result_df = df[df['share_votes'] == max_share_votes_per_district_year]
+
+    result_df = result_df.reset_index(drop=True)
+
+    return result_df
 
 
 def get_number_votes():
@@ -108,8 +117,12 @@ if __name__ == '__main__':
     logger.info("Reading data")
     """combined_df = concat_dfs("hungarian_election2014.csv",
                              "hungarian_election2018.csv",
-                             "hungarian_election2022.csv")"""
-    ingest_data_to_df()
+                             "hungarian_election2022.csv")
+    print(combined_df.head())"""
+    new_df = ingest_data_to_df()
+    # print(new_df.head())
+
+    #print(combined_df.compare(new_df, keep_shape=True))
     logger.info("Dataset created")
 
 

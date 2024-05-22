@@ -6,17 +6,13 @@ from sklearn.preprocessing import OneHotEncoder, LabelEncoder
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 
-from data_loaders import concat_dfs
+from data_loaders import ingest_data_to_df
 from logger_config import logger
 
 
 def train_model() -> tuple[Sequential, OneHotEncoder, LabelEncoder] or None:
     logger.info("Creating training dataset")
-    data = concat_dfs("hungarian_election2014.csv",
-                      "hungarian_election2018.csv",
-                      "hungarian_election2022.csv")
-
-    df = pd.DataFrame(data)
+    df = ingest_data_to_df()
 
     logger.info("Training model")
     try:
@@ -82,3 +78,13 @@ def predict_affiliation(model_input: dict,
         logger.error(f"ERROR: {str(e)}")
 
         return None
+
+
+n_model, n_onehot_encoder, n_label_encoder = train_model()
+new_input = {
+    'district': 'Baja',
+    'number_votes': 20000,
+    'share_votes': 50.0,
+    'year': 2024
+}
+n_predicted_affiliation = predict_affiliation(new_input, n_model, n_onehot_encoder, n_label_encoder)
