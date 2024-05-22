@@ -1,7 +1,13 @@
 import pandas as pd
-import psycopg2
+import mysql.connector
 
 from logger_config import logger
+
+CONNECTION_STRING = {'database': "electionresultsdb",
+                     'user': 'postgres',
+                     'password': 'postgres',
+                     'host': "localhost",
+                     'port': 5488}
 
 
 # noinspection SqlNoDataSourceInspection,SqlDialectInspection
@@ -9,11 +15,11 @@ def ingest_data_to_df() -> pd.DataFrame:
     cursor = ""
     logger.info('Establishing database connection')
     try:
-        connection = psycopg2.connect(database="electionresultsdb",
-                                      user='postgres',
-                                      password='postgres',
-                                      host="localhost",
-                                      port=5488)
+        connection = mysql.connector.connect(database=CONNECTION_STRING['database'],
+                                             user=CONNECTION_STRING['user'],
+                                             password=CONNECTION_STRING['password'],
+                                             host=CONNECTION_STRING['host'],
+                                             port=CONNECTION_STRING['port'])
 
         cursor = connection.cursor()
 
