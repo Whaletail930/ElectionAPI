@@ -31,7 +31,8 @@ def train_model() -> tuple[Sequential, OneHotEncoder, LabelEncoder] or None:
         features['share_votes'] = df['share_votes']
         features['year'] = df['year']
 
-        x_train, x_test, y_train, y_test = train_test_split(features, df['affiliation_encoded'], test_size=0.2, random_state=42)
+        x_train, x_test, y_train, y_test = train_test_split(
+            features, df['affiliation_encoded'], test_size=0.2, random_state=42)
 
         model = Sequential()
         model.add(Dense(32, input_dim=x_train.shape[1], activation='relu'))

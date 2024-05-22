@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import pandas as pd
+import psycopg2
 
 from logger_config import logger
 
@@ -73,11 +74,42 @@ def concat_dfs(csv_2014_filename: str, csv_2018_filename: str, csv_2022_filename
         return None
 
 
+# noinspection SqlNoDataSourceInspection,SqlDialectInspection
+def ingest_data_to_df() -> pd.DataFrame:
+    connection = psycopg2.connect(database="electionresultsdb",
+                                  user='postgres',
+                                  password='postgres',
+                                  host="localhost",
+                                  port=5488)
+
+    cursor = connection.cursor()
+
+    sql_context = """select 
+                        district,
+                        number_votes,
+                        share_votes,
+                        affiliation,
+                        year
+                    from 
+                        public.electionresults"""
+
+    cursor.execute(sql_context)
+
+    df = pd.DataFrame(cursor.fetchall(), columns=['district', 'number_votes', 'share_votes', 'affiliation', 'year'])
+
+    return df
+
+
+def get_number_votes():
+    pass
+
+
 if __name__ == '__main__':
     logger.info("Reading data")
-    combined_df = concat_dfs("hungarian_election2014.csv",
+    """combined_df = concat_dfs("hungarian_election2014.csv",
                              "hungarian_election2018.csv",
-                             "hungarian_election2022.csv")
+                             "hungarian_election2022.csv")"""
+    ingest_data_to_df()
     logger.info("Dataset created")
 
 

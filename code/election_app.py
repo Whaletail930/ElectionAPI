@@ -10,7 +10,13 @@ app = Flask(__name__)
 def make_prediction() -> Response or tuple[Response, int]:
     logger.info("Receiving request for prediction")
     if request.is_json:
-        data = request.get_json()
+        district = request.get_json()
+        data = {
+                'district': district,
+                'number_votes': 20000,
+                'share_votes': 51.0,
+                'year': 2024
+                }
         logger.info("Request received")
         if isinstance(data, dict):
             logger.info("Generating response")
