@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, Response
 
 from model import predict_affiliation, train_model
+from data_loaders import get_number_votes
 from logger_config import logger
 
 app = Flask(__name__)
@@ -11,10 +12,11 @@ def make_prediction() -> Response or tuple[Response, int]:
     logger.info("Receiving request for prediction")
     if request.is_json:
         district = request.get_json()
+        district_votes_dict = get_number_votes()
         data = {
-                'district': district,
-                'number_votes': 20000,
-                'share_votes': 51.0,
+                'district': district.get('district'),
+                'number_votes': district_votes_dict.get(district),
+                'share_votes': 60.0,
                 'year': 2024
                 }
         logger.info("Request received")

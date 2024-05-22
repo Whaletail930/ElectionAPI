@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-import tensorflow as tf
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder, LabelEncoder
 from tensorflow.keras.models import Sequential
@@ -78,13 +77,3 @@ def predict_affiliation(model_input: dict,
         logger.error(f"ERROR: {str(e)}")
 
         return None
-
-
-n_model, n_onehot_encoder, n_label_encoder = train_model()
-new_input = {
-    'district': 'Baja',
-    'number_votes': 20000,
-    'share_votes': 50.0,
-    'year': 2024
-}
-n_predicted_affiliation = predict_affiliation(new_input, n_model, n_onehot_encoder, n_label_encoder)
